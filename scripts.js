@@ -48,12 +48,25 @@ const questions =[
     score =0 ;
     resultDiv.classList.add('hide');
     nextBtn.style.display = "none";
-    questionContainer.innerText = "Ready - press Next to start";
-    optionsContainer.innerHTML = "";
-    timerDisplay.innerText = "Time Left :_";
+    showQuestion();
+  }
 
-    nextBtn.addEventListener("click" , () =>{
-         console.log("Next button clicked");
-    });
+  function showQuestion(){
+    const q =questions[currentQuestionIndex];
+    questionContainer.innerText = q.question;
+    optionsContainer.innerHTML ="";
+
+    q.options.forEach((option ,index) =>{
+        const btn = document.createElement("button");
+        btn.type ="button";
+        btn.className ="option-btn";
+        btn.textContent = option;
+        btn.dataset.index =index;
+        optionsContainer.appendChild(btn);
+        //optionContainer is parent and btn is child
+    })
+
+    timerDisplay.textContent = "Time Left :_ ";
+
   }
   startQuiz();
