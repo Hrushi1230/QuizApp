@@ -52,6 +52,7 @@ const questions =[
   }
 
   function showQuestion(){
+    hasAnswered =false;
     const q =questions[currentQuestionIndex];
     questionContainer.innerText = q.question;
     optionsContainer.innerHTML ="";
@@ -65,8 +66,29 @@ const questions =[
         optionsContainer.appendChild(btn);
         //optionContainer is parent and btn is child
     })
-
+    nextBtn.style.display ="none";
     timerDisplay.textContent = "Time Left :_ ";
 
   }
+  //handle option click via event delegation
+    optionsContainer.addEventListener("click" ,(e) =>{
+        if(hasAnswered) return;
+        const chosenText =e.target.textContent;
+        const correctAnswer = questions[currentQuestionIndex].answer;
+
+        hasAnswered = true;
+        
+        if(chosenText === correctAnswer){
+            score += 10;
+            e.target.style.backgroundColor = "green";
+        }
+        else {
+            e.target.style.backgroundColor = "red";
+        }
+        nextBtn.style.display = 'inline-block';
+    });
+
+    nextBtn.addEventListener("click" ,()=> {
+        console.log("Next button clicked");
+    })
   startQuiz();
