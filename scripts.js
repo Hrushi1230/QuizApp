@@ -88,7 +88,25 @@ const questions =[
         nextBtn.style.display = 'inline-block';
     });
 
-    nextBtn.addEventListener("click" ,()=> {
-        console.log("Next button clicked");
-    })
+    function nextQuestion(){
+        currentQuestionIndex++;
+        if(currentQuestionIndex >= questions.length){
+            showResult();
+        }
+        else{
+            showQuestion();
+        }
+    }
+
+    function showResult(){
+        questionContainer.classList.add('hide');
+        optionsContainer.classList.add('hide');
+        timerDisplay.classList.add('hide');
+        resultDiv.classList.remove('hide');
+        resultDiv.innerText = `Your score is ${score} out of 50`;
+        nextBtn.style.display ='none';
+    }
+
+    nextBtn.addEventListener("click" ,nextQuestion);
+
   startQuiz();
