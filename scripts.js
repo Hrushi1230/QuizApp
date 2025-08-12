@@ -3,27 +3,32 @@ const questions =[
     {
         question : "What is the capital of India?",
         options : ["Mumbai" , "New Delhi" , "Kolkta" ,"Bhubaneswar"],
-        answer : "New Delhi"
+        answer : "New Delhi",
+        time :12
     },
     {
         question : "What is 19 +69 =_ ?" ,
         options : ["78" , "87" , "88" , "98"],
-        answer : "88"
+        answer : "88",
+        time :12
     },
     {
         question : "What is the capital of Odisha?",
         options : ["Bhubaneswar" , "Kolkata" , "Mumbai" ,"New Delhi"],
-        answer : "Bhubaneswar"
+        answer : "Bhubaneswar",
+        time :12
     },
     {
         question : "what is 21 -9 =_ ?",
         options : ["12" , "13" , "14" , "15"],
-        answer : "12" 
+        answer : "12" ,
+        time :12
     },
     {
         question : "Who is the Prime Minister of India?",
         options : ["Narendra Modi" , "Rahul Gandhi" , "Amit Shah" ,"Arvind Kejriwal"],
-        answer : "Narendra Modi"
+        answer : "Narendra Modi",
+        time :12
     }
 ];
 
@@ -39,6 +44,8 @@ const questions =[
   let currentQuestionIndex = 0;
   let score =0;
   let hasAnswered =false;
+  let timerId= null;
+  let remainingTime =0;
 
   //Start the function
 
@@ -52,6 +59,7 @@ const questions =[
   }
 
   function showQuestion(){
+    stopTimer();
     hasAnswered =false;
     const q =questions[currentQuestionIndex];
     questionContainer.innerText = q.question;
@@ -67,9 +75,36 @@ const questions =[
         //optionContainer is parent and btn is child
     })
     nextBtn.style.display ="none";
-    timerDisplay.textContent = "Time Left :_ ";
+    remainingTime = q.time;
+    timerDisplay.textContent = `Time Left : ${remainingTime}s`;
+    startTimer();
+   }
+   //timer logic 
+   function startTimer(){
+    stopTimer(); // Clear any existing timer
+    timerId =setInterval(() =>{
+        remainingTime--;
+        timerDisplay.textContent =`Time Left : ${remainingTime}s`;
+        if(remainingTime <= 0){
+          stopTimer();
+          onTimeout();
+        }
+    }, 1000);
+   }
 
-  }
+   function stopTimer(){
+     if(timerId){
+        clearInterval(timerId);
+        timerId =null;
+     }
+   }
+
+   function onTimeout(){
+    hasAnswered =true;
+    nextQuestion();
+   }
+
+
   //handle option click via event delegation
     optionsContainer.addEventListener("click" ,(e) =>{
         if(hasAnswered) return;
@@ -87,6 +122,7 @@ const questions =[
         }
         nextBtn.style.display = 'inline-block';
     });
+    //Next Question Logic
 
     function nextQuestion(){
         currentQuestionIndex++;
@@ -97,8 +133,10 @@ const questions =[
             showQuestion();
         }
     }
+    //show result logic
 
     function showResult(){
+        stopTimer();
         questionContainer.classList.add('hide');
         optionsContainer.classList.add('hide');
         timerDisplay.classList.add('hide');
@@ -107,6 +145,7 @@ const questions =[
         nextBtn.style.display ='none';
     }
 
+
     nextBtn.addEventListener("click" ,nextQuestion);
 
-  startQuiz();
+startQuiz();
