@@ -50,6 +50,7 @@ const questions =[
   //Start the function
 
   function startQuiz() {
+    startTimer();
 
     currentQuestionIndex =0 ;
     score =0 ;
